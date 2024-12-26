@@ -1,13 +1,11 @@
-package kr.hbcho90.teststudy.user;
+package kr.hbcho90.teststudy.fixtures;
 
-import kr.hbcho90.teststudy.common.util.IdGenerator;
+import kr.hbcho90.teststudy.user.UserEntity;
 import kr.hbcho90.teststudy.user.dto.UserDto;
 
 import java.time.LocalDateTime;
-import java.util.Random;
-import java.util.UUID;
 
-public class UserFixture {
+public class UserFixtures {
     public static UserEntity createUserEntity() {
         return UserEntity.builder()
                 .userId("testId")
@@ -35,7 +33,7 @@ public class UserFixture {
     }
 
     public static UserDto createUserDto() {
-        return UserDto.of("testId", "testPassword", "testName", "testId@email.com", "01012341234");
+        return UserDto.of(createUserEntity());
     }
 
 }

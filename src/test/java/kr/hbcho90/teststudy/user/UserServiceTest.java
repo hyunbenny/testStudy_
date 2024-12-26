@@ -3,6 +3,7 @@ package kr.hbcho90.teststudy.user;
 import kr.hbcho90.teststudy.common.exception.AlreadyUserExistException;
 import kr.hbcho90.teststudy.common.exception.InvalidParameterException;
 import kr.hbcho90.teststudy.common.exception.UserNotFoundException;
+import kr.hbcho90.teststudy.fixtures.UserFixtures;
 import kr.hbcho90.teststudy.user.dto.UserDto;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -39,17 +40,18 @@ class UserServiceTest {
             // given
             String userId = "testId";
             String password = "testPassword";
-            given(userRepository.findByUserId(userId)).willReturn(Optional.of(UserFixture.createUserEntity()));
+            given(userRepository.findByUserId(userId)).willReturn(Optional.of(UserFixtures.createUserEntity()));
 
             // when
             var userInfo = sut.getUserInfo(userId, password);
+//            var userInfo = sut.getUserInfo(userId);
 
             // then
             then(userInfo)
                     .isNotNull()
                     .isInstanceOf(UserDto.class)
                     .hasFieldOrPropertyWithValue("userId", userId)
-                    .hasFieldOrPropertyWithValue("password", password);
+                    .hasFieldOrPropertyWithValue("password", null);
         }
 
         @Test
@@ -72,7 +74,7 @@ class UserServiceTest {
             // given
             String userId = "testId2";
             String password = "testPassword2";
-            UserEntity deletedUserEntity = UserFixture.createDeletedUserEntity();
+            UserEntity deletedUserEntity = UserFixtures.createDeletedUserEntity();
             given(userRepository.findByUserId(any())).willReturn(Optional.of(deletedUserEntity));
 
             // when & then
@@ -87,7 +89,7 @@ class UserServiceTest {
             // given
             String userId = "testId";
             String password = "wrongPassword";
-            given(userRepository.findByUserId(any())).willReturn(Optional.of(UserFixture.createUserEntity()));
+            given(userRepository.findByUserId(any())).willReturn(Optional.of(UserFixtures.createUserEntity()));
 
             // when & then
             thenThrownBy(() -> sut.getUserInfo(userId, password))
@@ -104,8 +106,8 @@ class UserServiceTest {
         @DisplayName("회원가입 성공")
         void givenSignUpRequest_whenRequestSignUp_thenSaveUserEntity() {
             // given
-            given(userRepository.save(any())).willReturn(UserFixture.createUserEntity());
-            var userDto = UserFixture.createUserDto();
+            given(userRepository.save(any())).willReturn(UserFixtures.createUserEntity());
+            var userDto = UserFixtures.createUserDto();
 
             // when
             var user = sut.signUp(userDto);
@@ -129,8 +131,8 @@ class UserServiceTest {
         @DisplayName("회원가입 시 중복된 아이디가 있으면 예외를 반환한다.")
         void givenSignUpRequest_whenSameUserIdExist_thenThrowException() {
             // given
-            given(userRepository.findByUserId(any())).willReturn(Optional.of(UserFixture.createUserEntity()));
-            var userDto = UserFixture.createUserDto();
+            given(userRepository.findByUserId(any())).willReturn(Optional.of(UserFixtures.createUserEntity()));
+            var userDto = UserFixtures.createUserDto();
 
             // when & then
             thenThrownBy(() -> sut.signUp(userDto))
@@ -142,8 +144,8 @@ class UserServiceTest {
         @DisplayName("회원가입 시 중복된 이메일이 있으면 예외를 반환한다.")
         void givenSignUpRequest_whenSameEmailExist_thenThrowException() {
             // given
-            given(userRepository.findByEmail(any())).willReturn(Optional.of(UserFixture.createUserEntity()));
-            var userDto = UserFixture.createUserDto();
+            given(userRepository.findByEmail(any())).willReturn(Optional.of(UserFixtures.createUserEntity()));
+            var userDto = UserFixtures.createUserDto();
 
             // when & then
             thenThrownBy(() -> sut.signUp(userDto))
@@ -168,7 +170,7 @@ class UserServiceTest {
             // given
             String userId = "testId";
             String password = "testPassword";
-            given(userRepository.findByUserId(userId)).willReturn(Optional.of(UserFixture.createUserEntity()));
+            given(userRepository.findByUserId(userId)).willReturn(Optional.of(UserFixtures.createUserEntity()));
 
             // when
             var user = sut.deleteUser(userId, password);
@@ -186,7 +188,7 @@ class UserServiceTest {
             // given
             String userId = "testId";
             String password = "wrongPassword";
-            given(userRepository.findByUserId(userId)).willReturn(Optional.of(UserFixture.createUserEntity()));
+            given(userRepository.findByUserId(userId)).willReturn(Optional.of(UserFixtures.createUserEntity()));
 
             // when & then
             thenThrownBy(() -> sut.deleteUser(userId, password))

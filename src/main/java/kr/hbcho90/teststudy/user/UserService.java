@@ -32,6 +32,13 @@ public class UserService {
         return UserDto.of(userEntity);
     }
 
+//    public UserDto getUserInfo(@NotNull String userId) {
+//        UserEntity userEntity = userRepository.findByUserId(userId).orElseThrow(() -> new UserNotFoundException());
+//        if(userEntity.isDeleted()) throw new UserNotFoundException();
+//
+//        return UserDto.of(userEntity);
+//    }
+
     // 사용자 정보 수정
 
 

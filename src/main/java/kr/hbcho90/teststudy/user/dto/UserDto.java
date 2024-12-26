@@ -21,7 +21,7 @@ public record UserDto(
     }
     
     public static UserDto of(UserEntity entity) {
-        return new UserDto(entity.getId(), entity.getUserId(), entity.getName(), entity.getPassword(), entity.getEmail(), entity.getPhoneNumber(),
+        return new UserDto(entity.getId(), entity.getUserId(), entity.getName(), null, entity.getEmail(), entity.getPhoneNumber(),
                 entity.isDeleted(), entity.getCreatedAt(), entity.getModifiedAt());
     }
 
